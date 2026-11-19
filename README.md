@@ -97,6 +97,14 @@ The form and the AI answer come in 13 languages: cs, de, en, es, fr, it, ja, nl,
 
 The tool reads the HTML the server returns. On a page built entirely by JavaScript it sees little text, says so, and bases the score on the meta tags and the H1 only.
 
+## Author
+
+Yuriy Akishin:
+- 🌐 Website: https://yu.net.ua
+- 📧 Email: yuriy.akishin@gmail.com
+- 💼 LinkedIn: https://www.linkedin.com/in/yuriyakishin/
+- 💻 GitHub: https://github.com/yuriyakishin
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
