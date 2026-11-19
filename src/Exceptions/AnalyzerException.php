@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yu\SeoMetaAnalyzer\Exceptions;
 
 use Yu\WebToolsCore\Exceptions\ToolException;

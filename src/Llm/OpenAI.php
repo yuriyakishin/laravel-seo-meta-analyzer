@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yu\SeoMetaAnalyzer\Llm;
 
 use Illuminate\Http\Client\ConnectionException;
