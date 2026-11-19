@@ -28,10 +28,10 @@ A Livewire tool for Laravel that checks a page's title and meta description, the
 ## Installation
 
 ```bash
-composer require yu-laravel/seo-meta-analyzer
+composer require yu-laravel/laravel-seo-meta-analyzer
 ```
 
-This also installs [`yu-laravel/web-tools-core`](https://github.com/yuriyakishin/web-tools-core). Both service providers are discovered automatically.
+This also installs [`yu-laravel/laravel-web-tools-core`](https://github.com/yuriyakishin/laravel-web-tools-core). Both service providers are discovered automatically.
 
 Set your OpenAI key in `.env`:
 
@@ -50,11 +50,11 @@ Put the component on a page whose layout includes `@livewireStyles` and `@livewi
 Import the styles into your CSS build:
 
 ```css
-@import "../../vendor/yu-laravel/web-tools-core/resources/css/web-tools-core.css";
-@import "../../vendor/yu-laravel/seo-meta-analyzer/resources/css/seo-meta-analyzer.css";
+@import "../../vendor/yu-laravel/laravel-web-tools-core/resources/css/web-tools-core.css";
+@import "../../vendor/yu-laravel/laravel-seo-meta-analyzer/resources/css/seo-meta-analyzer.css";
 ```
 
-To match your site's colours and fonts, override the `--wt-*` variables (see [Web Tools Core](https://github.com/yuriyakishin/web-tools-core#styles)).
+To match your site's colours and fonts, override the `--wt-*` variables (see [Web Tools Core](https://github.com/yuriyakishin/laravel-web-tools-core#styles)).
 
 ## Configuration
 
@@ -69,7 +69,7 @@ To match your site's colours and fonts, override the `--wt-*` variables (see [We
 | `SEO_META_ANALYZER_PER_HOUR` | `5` | AI requests per visitor IP per hour. A recheck of an unchanged page comes from the cache and doesn't count. |
 | `SEO_META_ANALYZER_PAGES_PER_HOUR` | `30` | Page loads per visitor IP per hour, cached ones included. This stops the tool from being used to flood other sites. |
 
-A result is cached for 24 hours per page content, so an unchanged page doesn't trigger a second AI request. Page fetching (timeouts, redirects, user agent) is set in [Web Tools Core](https://github.com/yuriyakishin/web-tools-core#configuration).
+A result is cached for 24 hours per page content, so an unchanged page doesn't trigger a second AI request. Page fetching (timeouts, redirects, user agent) is set in [Web Tools Core](https://github.com/yuriyakishin/laravel-web-tools-core#configuration).
 
 ## Using another AI provider
 
