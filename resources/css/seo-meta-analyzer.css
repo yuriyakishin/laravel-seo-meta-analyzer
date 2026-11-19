@@ -1,0 +1,153 @@
+/*
+ * SEO meta analyzer. Every colour and font is a --sma-* variable with a neutral default;
+ * a site maps them to its own variables (see SeoMetaAnalyzer.md, section 15).
+ */
+.sma {
+    --sma-accent: #2563eb;
+    --sma-accent-dark: #1e40af;
+    --sma-accent-soft: #eff6ff;
+    --sma-bg: #f4f5f7;
+    --sma-surface: #fff;
+    --sma-raised: #fafafb;
+    --sma-text: #111827;
+    --sma-text-2: #4b5563;
+    --sma-muted: #6b7280;
+    --sma-line: #e5e7eb;
+    --sma-line-strong: #d1d5db;
+    --sma-ok: #15803d;
+    --sma-warn: #b45309;
+    --sma-err: #b91c1c;
+    --sma-terminal: #0d1117;
+    --sma-font: system-ui, sans-serif;
+    --sma-mono: ui-monospace, monospace;
+    font-family: var(--sma-font);
+    color: var(--sma-text);
+}
+
+.sma *, .sma *::before, .sma *::after { box-sizing: border-box; }
+
+/* Form */
+.sma-tool { max-width: 860px; padding: 20px; border: 1px solid var(--sma-line); border-radius: 16px; background: var(--sma-surface); box-shadow: 0 24px 48px -32px rgba(13, 17, 23, .25); }
+.sma-row { display: flex; gap: 12px; align-items: stretch; }
+.sma-field { position: relative; flex: 1; }
+.sma-field input { width: 100%; padding: 26px 16px 10px; border: 1px solid var(--sma-line-strong); border-radius: 10px; background: var(--sma-bg); font: 400 18px var(--sma-font); color: var(--sma-text); outline: none; transition: border-color .2s, box-shadow .2s, background .2s; -webkit-appearance: none; appearance: none; }
+.sma-field label { position: absolute; left: 17px; top: 19px; font-size: 18px; color: var(--sma-text-2); pointer-events: none; transition: all .2s; }
+.sma-field input:hover { border-color: var(--sma-muted); }
+.sma-field input:focus { background: var(--sma-surface); border-color: var(--sma-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sma-accent) 14%, transparent); }
+.sma-field input:focus + label, .sma-field input:not(:placeholder-shown) + label { top: 9px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.sma-field-err input { border-color: var(--sma-err); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sma-err) 12%, transparent); }
+.sma-go { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 10px; min-height: 60px; padding: 0 28px; border: 0; border-radius: 999px; background: var(--sma-accent); color: #fff; font: 500 15px var(--sma-font); cursor: pointer; transition: background .3s; }
+.sma-go:hover { background: var(--sma-accent-dark); }
+.sma-go[disabled] { opacity: .6; pointer-events: none; }
+.sma-spin { width: 18px; height: 18px; border: 2px solid rgba(255, 255, 255, .4); border-top-color: #fff; border-radius: 50%; animation: sma-spin .7s linear infinite; }
+.sma-hint { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 12px; font-size: 13px; color: var(--sma-muted); }
+.sma-error { margin-top: 10px; font-size: 14px; color: var(--sma-err); }
+
+/* Report frame */
+.sma-report { margin-top: 32px; overflow: hidden; border: 1px solid var(--sma-line); border-radius: 20px; background: var(--sma-surface); box-shadow: 0 32px 64px -40px rgba(13, 17, 23, .35); scroll-margin-top: 96px; }
+.sma-bar { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 8px 12px 8px 20px; border-bottom: 1px solid var(--sma-line); background: var(--sma-raised); font: 12px var(--sma-mono); color: var(--sma-muted); }
+.sma-bar > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sma-btn { flex: none; padding: 6px 12px; border: 1px solid var(--sma-line-strong); border-radius: 8px; background: var(--sma-surface); font: 13px var(--sma-font); color: var(--sma-text); cursor: pointer; }
+.sma-btn:hover { border-color: var(--sma-accent); color: var(--sma-accent); }
+.sma-bar .sma-btn { margin-left: auto; }
+.sma-part { padding: 36px; }
+.sma-part + .sma-part { border-top: 1px solid var(--sma-line); }
+
+/* Loading log: a terminal whose lines light up one by one */
+.sma-log { padding: 24px 28px; border-color: var(--sma-terminal); background: var(--sma-terminal); color: #c9d1d9; font: 13px/1.9 var(--sma-mono); }
+.sma-log p { margin: 0; opacity: .35; transition: opacity .3s; }
+.sma-log p::before { content: "·"; display: inline-block; width: 18px; color: #7d8590; }
+.sma-log .sma-run { opacity: 1; }
+.sma-log .sma-run::before { content: "→"; color: #9db8f5; }
+.sma-log .sma-done { opacity: 1; }
+.sma-log .sma-done::before { content: "✓"; color: #3fb950; }
+
+/* Score */
+.sma-score { display: grid; grid-template-columns: auto 1fr 300px; gap: 40px; align-items: center; }
+.sma-ring { --v: 0; display: flex; align-items: baseline; justify-content: center; width: 132px; height: 132px; padding-top: 44px; border-radius: 50%; background: radial-gradient(closest-side, var(--sma-surface) 82%, transparent 83%), conic-gradient(var(--sma-accent) calc(var(--v) * 36deg), var(--sma-line) 0); }
+.sma-ring b { font-size: 40px; font-weight: 300; letter-spacing: -.04em; line-height: 1; }
+.sma-ring small { margin-left: 2px; font-size: 14px; color: var(--sma-muted); }
+.sma-score h2 { margin: 0 0 12px; font-size: clamp(24px, 2.4vw, 32px); font-weight: 300; letter-spacing: -.03em; line-height: 1.15; }
+.sma-sum { max-width: 560px; margin: 0; font-size: 15.5px; color: var(--sma-text-2); }
+.sma-crit { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.sma-crit li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-size: 14px; }
+.sma-crit b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.sma-crit i { --v: 0; grid-column: 1 / -1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--sma-accent) calc(var(--v) * 10%), var(--sma-line) 0); }
+
+/* Sections */
+.sma-h { margin: 0 0 20px; font-size: clamp(20px, 1.8vw, 24px); font-weight: 400; letter-spacing: -.02em; }
+.sma-tag { margin: 0 0 14px; font: 500 12px var(--sma-mono); color: var(--sma-muted); }
+
+/* Now vs AI snippet */
+.sma-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.sma-col { padding: 24px; border: 1px solid var(--sma-line); border-radius: 16px; }
+.sma-new { border-color: var(--sma-accent); background: var(--sma-accent-soft); }
+.sma-new .sma-tag { color: var(--sma-accent); }
+/* Google result look: fixed light colours on purpose, it imitates a real search page */
+.sma-serp { display: flex; flex-direction: column; gap: 4px; padding: 16px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; font-family: Arial, sans-serif; }
+.sma-serp-u { font-size: 12px; color: #4d5156; }
+.sma-serp-t { font-size: 19px; line-height: 1.3; color: #1a0dab; overflow-wrap: anywhere; }
+.sma-serp-d { font-size: 14px; line-height: 1.55; color: #4d5156; overflow-wrap: anywhere; }
+.sma-len { display: grid; gap: 10px; margin: 18px 0 0; font-size: 14px; }
+.sma-len div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; }
+.sma-len dt { color: var(--sma-muted); }
+.sma-len dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* Length status colours (titleStatus / descriptionStatus) */
+.sma-len .sma-ok, .sma-var-l .sma-ok { color: var(--sma-ok); }
+.sma-len .sma-near, .sma-var-l .sma-near { color: var(--sma-warn); }
+.sma-len .sma-bad, .sma-len .sma-missing, .sma-var-l .sma-bad, .sma-var-l .sma-missing { color: var(--sma-err); }
+
+/* Issues and recommendations */
+.sma-two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.sma-two > div + div { padding-left: 48px; border-left: 1px solid var(--sma-line); }
+.sma-issues { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.sma-issues li { position: relative; padding: 14px 16px 14px 44px; border: 1px solid var(--sma-line); border-radius: 12px; font-size: 14.5px; color: var(--sma-text-2); }
+.sma-issues b { display: block; margin-bottom: 2px; font-weight: 500; color: var(--sma-text); }
+.sma-issues li::before { content: "!"; position: absolute; left: 16px; top: 14px; width: 18px; height: 18px; border-radius: 50%; font: 600 11px/18px var(--sma-font); text-align: center; color: #fff; }
+.sma-issues .sma-critical::before { background: var(--sma-err); }
+.sma-issues .sma-warning::before { background: var(--sma-warn); }
+.sma-issues .sma-ok::before { content: "✓"; background: var(--sma-ok); }
+.sma-recs { display: grid; gap: 12px; margin: 0; padding-left: 20px; font-size: 15.5px; color: var(--sma-text-2); }
+.sma-recs li::marker { font: 500 13px var(--sma-mono); color: var(--sma-accent); }
+
+/* Ready-made variants */
+.sma-vars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.sma-var { display: flex; flex-direction: column; gap: 10px; padding: 20px; border: 1px solid var(--sma-line); border-radius: 14px; }
+.sma-var .sma-tag { margin: 0; }
+/* One field of a variant: a label with the length and a copy button, then the text */
+.sma-var-f { display: grid; gap: 4px; }
+.sma-var-f + .sma-var-f { padding-top: 10px; border-top: 1px dashed var(--sma-line); }
+.sma-var-l { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 500 11px var(--sma-mono); color: var(--sma-muted); }
+.sma-var-l b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.sma-copy { flex: none; padding: 2px 8px; border: 1px solid var(--sma-line-strong); border-radius: 6px; background: var(--sma-surface); font: 12px var(--sma-font); color: var(--sma-text); cursor: pointer; }
+.sma-copy:hover { border-color: var(--sma-accent); color: var(--sma-accent); }
+.sma-var-t { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.sma-var-d { margin: 0; font-size: 14px; color: var(--sma-text-2); overflow-wrap: anywhere; }
+.sma-note { max-width: 720px; margin: 20px 0 0; font-size: 13px; color: var(--sma-muted); }
+
+@keyframes sma-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 1100px) {
+    .sma-score { grid-template-columns: auto 1fr; }
+    .sma-crit { grid-column: 1 / -1; }
+    .sma-vars { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+    .sma-row { flex-direction: column; }
+    .sma-go { min-height: 52px; }
+    .sma-tool { padding: 14px; }
+    .sma-score { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+    .sma-cmp, .sma-two { grid-template-columns: 1fr; }
+    .sma-two { gap: 32px; }
+    .sma-two > div + div { padding: 32px 0 0; border-top: 1px solid var(--sma-line); border-left: 0; }
+    .sma-part { padding: 24px 20px; }
+    .sma-log { padding: 20px; }
+    .sma-bar { padding-left: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sma-spin { animation-duration: 2s; }
+    .sma-log p { transition: none; }
+}

@@ -1,0 +1,44 @@
+{
+    "name": "yu-laravel/seo-meta-analyzer",
+    "description": "Laravel Livewire tool that checks a page's title, description and other meta tags and suggests better ones with AI.",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "livewire",
+        "seo",
+        "meta-tags",
+        "ai"
+    ],
+    "homepage": "https://github.com/yuriyakishin/seo-meta-analyzer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuriy Akishin",
+            "homepage": "https://yu.net.ua"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "ext-mbstring": "*",
+        "laravel/framework": "^13.0",
+        "livewire/livewire": "^4.0",
+        "yu-laravel/web-tools-core": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yu\\SeoMetaAnalyzer\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Yu\\SeoMetaAnalyzer\\SeoMetaAnalyzerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
