@@ -1,5 +1,5 @@
 {
-    "name": "yu-laravel/laravel-seo-meta-analyzer",
+    "name": "yu-laravel/seo-meta-analyzer",
     "description": "Laravel Livewire tool that checks a page's title, description and other meta tags and suggests better ones with AI.",
     "type": "library",
     "keywords": [
@@ -23,7 +23,7 @@
         "ext-mbstring": "*",
         "laravel/framework": "^13.0",
         "livewire/livewire": "^4.0",
-        "yu-laravel/laravel-web-tools-core": "^1.0"
+        "yu-laravel/web-tools-core": "^1.0"
     },
     "autoload": {
         "psr-4": {
