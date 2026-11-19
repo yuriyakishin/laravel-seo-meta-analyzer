@@ -8,6 +8,8 @@
 
 A Livewire tool for Laravel that checks a page's title and meta description, then has an AI score them and write better versions. The visitor enters a URL. The tool reads the page, runs technical checks on the meta tags, and asks the AI how well they match the page and the searcher's intent.
 
+![SEO Meta Analyzer report](images/meta-analizer.png)
+
 **🔗 Live example: [yu.net.ua/en/tools/seo-meta-analyzer](https://yu.net.ua/en/tools/seo-meta-analyzer)**
 
 ## What it checks
