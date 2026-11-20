@@ -48,7 +48,9 @@
 
     {{-- Отчёт --}}
     @if ($report)
-        <div class="sma-report" wire:loading.remove wire:target="analyze" aria-live="polite">
+        {{-- A new block for every check (keyed by the count), so each report scrolls the tool up to its form --}}
+        <div wire:key="wt-report-{{ $reportNumber }}" class="sma-report" wire:loading.remove wire:target="analyze" aria-live="polite"
+             x-init="$root.scrollIntoView({ behavior: 'smooth', block: 'start' })">
             <div class="sma-bar">
                 <span>report · {{ parse_url($report['url'], PHP_URL_HOST) }} · {{ \Illuminate\Support\Carbon::parse($report['checkedAt'])->locale($locale)->isoFormat('L') }}</span>
                 <button type="button" class="sma-btn" @click="again()">{{ $t('report.again') }}</button>

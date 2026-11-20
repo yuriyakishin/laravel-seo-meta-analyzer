@@ -39,6 +39,10 @@ class SeoMetaAnalyzerComponent extends Component
     #[Locked]
     public ?string $error = null;
 
+    /** Counts the checks; the report block is keyed by it, so every new report is a new block that scrolls into view. */
+    #[Locked]
+    public int $reportNumber = 0;
+
     public function mount(LocaleResolver $locales): void
     {
         $this->browserLocale = $locales->fromBrowser(request());
@@ -52,6 +56,7 @@ class SeoMetaAnalyzerComponent extends Component
         LocaleResolver $locales
     ): void {
         $this->reset('report', 'error');
+        $this->reportNumber++;
 
         $this->validate(
             ['url' => ['required', 'string', 'max:2048']],
